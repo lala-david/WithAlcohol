@@ -4,6 +4,7 @@ import { Title, Subtitle } from "../components";
 import SelectBox1 from "./SelectBox1";
 import { useToggle } from "../hooks";
 import { Modal, ModalContent, ModalAction, Button } from "../theme/daisyui";
+import { Link } from "react-router-dom";
 
 type FormType = {
   sex: string;
@@ -51,7 +52,7 @@ export default function AlcoholInputState() {
 
       const formData = new FormData();
 
-      alert(JSON.stringify(form, null, 2));
+      //alert(JSON.stringify(form, null, 2));
       if (form.sex != "" && form.bottle != "") {
         setResult((result) => ({
           ...result,
@@ -171,53 +172,64 @@ export default function AlcoholInputState() {
 
   // prettier-ignore
   return (
-    <div>
+    <div className="border-4 border-white border-solid">
       <form onSubmit={onSubmit}>
         <div className="flex flex-col justify-center h-screen p-4 mt-4">
-            <div>
-              <label className="font-bold label">성별을 입력해주세요</label>
-              {/* <SelectBox1/> */}
-              <input value={form.sex} onChange={onChangeSex} id = "sex" type="text" placeholder="enter your sex" 
-              className="input input-primary" list="sexlist"/>
-              <datalist id = "sexlist">
-                {/*{ text: "Pizza", value: "1" } */}
-                <option value="남자"/>
-                <option value="여자"/>
-              </datalist>
-            </div>
-            <div>
-              <label className="font-bold label">몸무게를 입력해주세요(1kg ~ 200kg)</label>
-              <input value={form.weight} onChange={onChangeWeight} id = "weight" type="number" min="1" max="200" placeholder="enter your weight" 
-              className="input input-primary"/>
-            </div>
-            <div>
-              <label className="font-bold label">드실 주류를 입력해주세요</label>
-              <input value={form.alcohol} onChange={onChangeAlcohol} id = "alcohol" type="text" placeholder="enter your alcohol" 
-              className="input input-primary" list = "alcohollist" />
-              <datalist id = "alcohollist">
-                <option value="소주"/>
-                {/*{ text: "Pizza", value: "1" } */}
-                <option value="맥주"/>
-                <option value="양주"/>
-              </datalist>
-            </div>
-            <div>
-              <label className="font-bold label">얼마나 드실건가요?</label>
-              <input value={form.bottlecount} onChange={onChangeBottleCount} id = "bottlecount" type="number" min="1" placeholder="enter your bottlecount" 
-              className="input input-primary"/>
-              <input value={form.bottle} onChange={onChangeBottle} id = "bottle" type="text" placeholder="enter your bottle" 
-              className="input input-primary" list = "bottlelist"/>
-              <datalist id = "bottlelist">
-                <option value="잔"/>
-                <option value="병"/>
-              </datalist>
-              
-            </div>
-            <div className="flex justify-center mt-4">
-              <input type="submit" value="결과보기" className="w-1/2 btn btn-sm btn-primary"/>
-              <button value="Cancel" onClick={onClickCancel} className="w-1/2 ml-4 btn btn-sm" defaultValue="Cancel" >취소</button>
-            </div>
+          
+          <div>
+            <label className="font-bold label">👩🏻 🧑🏻 성별을 입력해주세요</label>
+            {/* <SelectBox1/> */}
+            <input value={form.sex} onChange={onChangeSex} id = "sex" type="text" placeholder="성별 입력" 
+            className="input input-primary" list="sexlist"/>
+            <datalist id = "sexlist">
+              {/*{ text: "Pizza", value: "1" } */}
+              <option value="남자"/>
+              <option value="여자"/>
+            </datalist>
           </div>
+          <div>
+            <label className="font-bold label">몸무게를 입력해주세요(1kg ~ 200kg)</label>
+            <input value={form.weight} onChange={onChangeWeight} id = "weight" type="number" min="1" max="200" placeholder="enter your weight" 
+            className="input input-primary"/>
+          </div>
+          <div>
+            <label className="font-bold label">드실 주류를 입력해주세요</label>
+            <input value={form.alcohol} onChange={onChangeAlcohol} id = "alcohol" type="text" placeholder="주류 입력" 
+            className="input input-primary" list = "alcohollist" />
+            <datalist id = "alcohollist">
+              <option value="소주"/>
+              {/*{ text: "Pizza", value: "1" } */}
+              <option value="맥주"/>
+              <option value="양주"/>
+            </datalist>
+          </div>
+          <div>
+            <label className="font-bold label">😝 얼마나 드실건가요?</label>
+            <input value={form.bottlecount} onChange={onChangeBottleCount} id = "bottlecount" type="number" min="1" placeholder="enter your bottlecount" 
+            className="input input-primary"/>
+            <input value={form.bottle} onChange={onChangeBottle} id = "bottle" type="text" placeholder="몇 병 입력" 
+            className="input input-primary" list = "bottlelist"/>
+            <datalist id = "bottlelist">
+              <option value="잔"/>
+              <option value="병"/>
+            </datalist>
+              
+          </div>
+          <div className="flex justify-center mt-4">
+            <input type="submit" value="결과보기" className="w-1/2 btn btn-sm btn-primary"/>
+            <button value="Cancel" onClick={onClickCancel} className="w-1/2 ml-4 btn btn-sm" defaultValue="Cancel" >취소</button>
+          </div>
+          <div>
+            <br>
+            
+            </br>
+          </div>
+          <div className="flex justify-center mt-4">
+          <Link to="/">
+          <button className="btn">돌아가기</button>
+        </Link>
+        </div> 
+        </div>
       </form>
       <Modal open={open}>
       <ModalContent
