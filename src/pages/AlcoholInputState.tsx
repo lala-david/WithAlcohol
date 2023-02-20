@@ -1,7 +1,6 @@
 import type { FormEvent, ChangeEvent, MouseEvent } from "react";
 import { useCallback, useState } from "react";
 import { Title, Subtitle } from "../components";
-import SelectBox1 from "./SelectBox1";
 import { useToggle } from "../hooks";
 import { Modal, ModalContent, ModalAction, Button } from "../theme/daisyui";
 import { Link } from "react-router-dom";
@@ -17,6 +16,7 @@ type ResultType = {
   B_A_L: number;
   G_CO: number;
   YourState: string;
+  Imgsrc: string;
 };
 
 export default function AlcoholInputState() {
@@ -39,6 +39,7 @@ export default function AlcoholInputState() {
     B_A_L: 0.0,
     G_CO: 0.0,
     YourState: "",
+    Imgsrc: "",
   });
 
   const [open, toggleOpen] = useToggle(false);
@@ -104,10 +105,16 @@ export default function AlcoholInputState() {
         ...result,
         YourState:
           result.B_A_L >= 0.03 && result.B_A_L < 0.08
-            ? "이만큼 드시고 운전하면 100일간 면허 정지!"
+            ? "😣 이만큼 드시고 운전하면 100일 면허 정지❗"
             : result.B_A_L > 0.08
-            ? "이만큼 드시고 운전하면 면허 취소에요~"
-            : "조심히 귀가 하세요~",
+            ? "😱 이만큼 드시고 운전하면 면허 취소에요 🚫"
+            : "😊 조심히 귀가 하세요 💙",
+        Imgsrc:
+          result.B_A_L >= 0.03 && result.B_A_L < 0.08
+            ? "img/drunk1.jpg"
+            : result.B_A_L > 0.08
+            ? "img/drunk2.jpg"
+            : "img/chims.jpg",
       }));
     },
     [form]
@@ -172,12 +179,12 @@ export default function AlcoholInputState() {
 
   // prettier-ignore
   return (
-    <div className="border-4 border-white border-solid">
-      <form onSubmit={onSubmit}>
-        <div className="flex flex-col justify-center h-screen p-4 mt-4">
-          
-          <div>
-            <label className="font-bold label">👩🏻 🧑🏻 성별을 입력해주세요</label>
+    <div className="flex items-center justify-center h-screen">
+      <form onSubmit={onSubmit} className="px-8 pt-6 pb-8 mb-4 rounded-lg bg-gradient-to-b from-white via-white to-white" style={{height: '570px'}}>
+        <div className="mb-4">
+          <div className="relative">
+            <div>
+              <label className="font-bold label">👩🏻 🧑🏻 성별을 입력해주세요</label>
             {/* <SelectBox1/> */}
             <input value={form.sex} onChange={onChangeSex} id = "sex" type="text" placeholder="성별 입력" 
             className="input input-primary" list="sexlist"/>
@@ -187,13 +194,17 @@ export default function AlcoholInputState() {
               <option value="여자"/>
             </datalist>
           </div>
-          <div>
-            <label className="font-bold label">몸무게를 입력해주세요(1kg ~ 200kg)</label>
+          </div>
+          <div className="mb-4"> 
+          <div className="relative">
+            <label className="font-bold label">⏲ 몸무게를 입력해주세요(1kg ~ 200kg)</label>
             <input value={form.weight} onChange={onChangeWeight} id = "weight" type="number" min="1" max="200" placeholder="enter your weight" 
             className="input input-primary"/>
           </div>
-          <div>
-            <label className="font-bold label">드실 주류를 입력해주세요</label>
+          </div> 
+          <div className="mb-4">
+            <label className="font-bold label">🍾 드실 주류를 입력해주세요</label>
+            <div className="relative">
             <input value={form.alcohol} onChange={onChangeAlcohol} id = "alcohol" type="text" placeholder="주류 입력" 
             className="input input-primary" list = "alcohollist" />
             <datalist id = "alcohollist">
@@ -202,45 +213,49 @@ export default function AlcoholInputState() {
               <option value="맥주"/>
               <option value="양주"/>
             </datalist>
-          </div>
-          <div>
+            </div>
+            </div>
+          <div className="mb-4">
             <label className="font-bold label">😝 얼마나 드실건가요?</label>
-            <input value={form.bottlecount} onChange={onChangeBottleCount} id = "bottlecount" type="number" min="1" placeholder="enter your bottlecount" 
-            className="input input-primary"/>
-            <input value={form.bottle} onChange={onChangeBottle} id = "bottle" type="text" placeholder="몇 병 입력" 
-            className="input input-primary" list = "bottlelist"/>
-            <datalist id = "bottlelist">
-              <option value="잔"/>
-              <option value="병"/>
-            </datalist>
-              
+            <div className="flex justify-between">
+              <div className="relative w-1/2 mr-2">
+                <input value={form.bottlecount} onChange={onChangeBottleCount} id="bottlecount" type="number" min="1" placeholder="enter your bottlecount" className="input input-primary" />
+                </div>
+                <div className="relative w-1/2 mr-1">
+                  <input value={form.bottle} onChange={onChangeBottle} id="bottle" type="text" placeholder="몇 병 입력" className="input input-primary" list="bottlelist" />
+                  <datalist id="bottlelist">
+                    <option value="잔" />
+                    <option value="병" />
+                  </datalist>
+                </div>
+              </div>
+            </div>
+          <div className="flex mt-4">
+            <div className="mx-0">
+              <input type="submit" value="결과보기" className="px-20 py-2 font-bold text-white bg-blue-600 rounded px-15 px-22 hover:bg-blue-700 focus:outline-none focus:shadow-outline"/>
+              <button value="Cancel" onClick={onClickCancel} className="px-24 py-2 mx-2 font-semibold text-gray-800 bg-white border border-gray-400 rounded shadow px-22 hover:bg-gray-100">취소</button>
+            </div> 
           </div>
-          <div className="flex justify-center mt-4">
-            <input type="submit" value="결과보기" className="w-1/2 btn btn-sm btn-primary"/>
-            <button value="Cancel" onClick={onClickCancel} className="w-1/2 ml-4 btn btn-sm" defaultValue="Cancel" >취소</button>
-          </div>
-          <div>
-            <br>
-            
-            </br>
-          </div>
-          <div className="flex justify-center mt-4">
-          <Link to="/">
-          <button className="btn">돌아가기</button>
-        </Link>
-        </div> 
+          <div className="flex justify-center mt-5 mr-5">
+            <Link to="/">
+              <button className="btn">돌아가기</button>
+            </Link>
+          </div> 
         </div>
       </form>
-      <Modal open={open}>
+    <Modal open={open}>
       <ModalContent
         closeIconClassName="btn-primary btn-online"
-        onCloseIconClicked={toggleOpen}
-      >
-        <Subtitle>당신의 상태는 ?</Subtitle>
-        <p>혈중 알코올 농도 : {result.B_A_L}</p>
-        <p>예상 알코올 해독 시간 : {(result.B_A_L / 0.015).toFixed(1)} 시간</p>
-        <p className="font-bold">{result.YourState}</p>
-
+        onCloseIconClicked={toggleOpen}>
+        <div className="p-6 rounded-md bg-gradient-to-r from-blue-500 to-purple-300">
+          <Subtitle className="pb-2 font-bold text-white">🙋🏻‍♂️ 당신의 상태는 ?</Subtitle>
+          <div className="p-4 border-2 border-white rounded-md">
+            <p className="text-lg font-semibold text-white">😵 혈중 알코올 농도 : {result.B_A_L}</p>
+            <p className="text-lg font-semibold text-white">⏰ 예상 알코올 해독 시간 : {(result.B_A_L / 0.015).toFixed(1)} 시간</p>
+            <p className="text-lg font-bold text-white">{result.YourState}</p>
+            <img src={result.Imgsrc}/>
+          </div>
+        </div>
         <ModalAction>
           <button className="btn btn-primary" onClick={onAccept}>
             Accept
@@ -252,5 +267,5 @@ export default function AlcoholInputState() {
       </ModalContent>
     </Modal>
   </div>
-  )
+ )
 }
